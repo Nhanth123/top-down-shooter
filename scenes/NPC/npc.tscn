@@ -20,7 +20,7 @@ shape = SubResource("CapsuleShape2D_pspll")
 [node name="Label" type="Label" parent="."]
 offset_right = 40.0
 offset_bottom = 23.0
-text = "123"
+text = "Debug msg"
 
 [node name="NavAgent" type="NavigationAgent2D" parent="."]
 debug_enabled = true
