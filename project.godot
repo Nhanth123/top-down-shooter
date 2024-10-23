@@ -23,6 +23,10 @@ set_target={
 ]
 }
 
+[navigation]
+
+2d/default_edge_connection_margin=10.0
+
 [rendering]
 
 renderer/rendering_method="mobile"
