@@ -1,14 +1,19 @@
-[gd_scene load_steps=5 format=4 uid="uid://rd175g01g8y3"]
+[gd_scene load_steps=6 format=4 uid="uid://rd175g01g8y3"]
 
 [ext_resource type="TileSet" uid="uid://do88xvca6dsqy" path="res://assets/level_tiles_backup.tres" id="1_pf5or"]
 [ext_resource type="PackedScene" uid="uid://ci65btrdypihb" path="res://scenes/NPC/npc.tscn" id="2_lsai2"]
 [ext_resource type="PackedScene" uid="uid://b7b3h7vtdshqx" path="res://scenes/waypoint/waypoint.tscn" id="3_lshyl"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_h1qua"]
-vertices = PackedVector2Array(306.922, 430.141, 296.313, 460.609, 230.789, 470.883, 103.352, 463.383, 98.6875, 293.906, 337.727, 293.102)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4, 5)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(73, 269, 369, 268, 331, 437, 315, 483, 232, 496, 79, 487)])
+vertices = PackedVector2Array(459, 700.117, 459.898, 869.5, 412.563, 728, 350.758, 488, 362.578, 867, 410.609, 884.5, 43.8281, 934.391, 91.8125, 867, 40.1406, 302.289, 81.0078, 723.469, 344.773, 293.688, 315.477, 728, 458.109, 488)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 2, 1, 5), PackedInt32Array(4, 5, 6, 7), PackedInt32Array(7, 6, 8, 9), PackedInt32Array(9, 8, 10, 3, 11), PackedInt32Array(2, 11, 3), PackedInt32Array(0, 3, 12)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(15, 278, 369, 268, 375, 463, 483, 463, 484, 700, 485, 888, 416, 909, 19, 963)])
 agent_radius = 25.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_jw87f"]
+vertices = PackedVector2Array(319.898, 595.711, 317.102, 309.281, 660.094, 318.727, 523.891, 590, 662.891, 590.93)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(3, 2, 4)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(307, 299, 670, 309, 673, 601, 524, 600, 310, 606)])
 
 [node name="LevelMap" type="Node2D"]
 
@@ -38,6 +43,15 @@ position = Vector2(429, -76)
 
 [node name="NavigationRegion2D_1" type="NavigationRegion2D" parent="."]
 navigation_polygon = SubResource("NavigationPolygon_h1qua")
+
+[node name="Polygon2D" type="Polygon2D" parent="NavigationRegion2D_1"]
+position = Vector2(113.407, 199.483)
+color = Color(0.901961, 0.329412, 0.243137, 1)
+polygon = PackedVector2Array(-5.40689, 549.517, 201.593, 553.517, 263.593, 553.517, 231.593, 642.517, 1.59311, 642.517)
+
+[node name="NavigationRegion2D_2" type="NavigationRegion2D" parent="."]
+position = Vector2(148, 161)
+navigation_polygon = SubResource("NavigationPolygon_jw87f")
 
 [node name="Path1" type="Node2D" parent="."]
 
