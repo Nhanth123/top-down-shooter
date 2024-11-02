@@ -3,9 +3,8 @@
 [ext_resource type="Script" path="res://scenes/NPC/npc.gd" id="1_jfw7b"]
 [ext_resource type="Texture2D" uid="uid://dgm5qoawqbv8g" path="res://assets/images/soldier1_gun.png" id="1_xmtgk"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pspll"]
-radius = 16.0
-height = 40.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_pii52"]
+radius = 22.0
 
 [node name="NPC" type="CharacterBody2D"]
 script = ExtResource("1_jfw7b")
@@ -15,7 +14,7 @@ position = Vector2(10, 0)
 texture = ExtResource("1_xmtgk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CapsuleShape2D_pspll")
+shape = SubResource("CircleShape2D_pii52")
 
 [node name="Label" type="Label" parent="."]
 offset_right = 40.0
