@@ -9,13 +9,17 @@ extends CharacterBody2D
 @export var patrol_points: NodePath
 
 
-var _waypoints: Array = []
-var _current_wp: int  = 0
+
 
 const SPEED: float = 120
 
-var _player_ref : Player
+enum ENEMY_STATE { PATROLLING, CHASING, SEARCHING }
 
+
+var _waypoints: Array = []
+var _current_wp: int  = 0
+var _player_ref : Player
+var _state: ENEMY_STATE = ENEMY_STATE.PATROLLING
 
 func _ready() -> void:
 	set_physics_process(false)
@@ -34,9 +38,11 @@ func _physics_process(_delta: float) -> void:
 		nav_agent.target_position = get_global_mouse_position()
 	
 	raycast_to_player()
+	update_state()
+	update_movement()
 	update_navigation()
-	process_patrolling()
 	set_label()
+
 
 func get_fov_angle() -> float:
 	var direction = global_position.direction_to(_player_ref.global_position)
@@ -47,10 +53,11 @@ func get_fov_angle() -> float:
 
 func player_in_fov() -> bool:
 	return get_fov_angle() < 60.0
-	
-	
+
+
 func raycast_to_player() -> void:
 	player_detect.look_at(_player_ref.global_position)
+
 
 func player_detected() -> bool:
 	var c = ray_cast_2d.get_collider()
@@ -58,10 +65,18 @@ func player_detected() -> bool:
 		return c.is_in_group("Player")
 	return false
 
+
+func can_see_player() -> bool:
+	return player_in_fov() and player_detected()
+
+func set_nav_to_player():
+	nav_agent.target_position = _player_ref.global_position
+
+
 func process_patrolling() -> void:
 	if nav_agent.is_navigation_finished() == true:
 		navigate_wp()
-	
+
 
 func navigate_wp() -> void:
 	if _current_wp >= len(_waypoints):
@@ -69,6 +84,31 @@ func navigate_wp() -> void:
 	nav_agent.target_position = _waypoints[_current_wp]
 	_current_wp += 1
 
+func process_chasing() -> void:
+	set_nav_to_player()
+
+func set_state(new_state: ENEMY_STATE) -> void:
+	if new_state == _state:
+		return
+	_state = new_state
+
+func update_movement() -> void:
+	match _state:
+		ENEMY_STATE.PATROLLING:
+			process_patrolling()
+		ENEMY_STATE.CHASING:
+			process_chasing()
+
+func update_state() -> void:
+	var new_state = _state
+	var can_see = can_see_player()
+	
+	if can_see == true:
+		new_state = ENEMY_STATE.CHASING
+	else:
+		new_state = ENEMY_STATE.PATROLLING
+	
+	set_state(new_state)
 
 func set_label():
 	var debug_msg = ""
@@ -78,7 +118,7 @@ func set_label():
 	debug_msg += "Target: " + str(nav_agent.target_position) + "\n"
 	debug_msg += "Player detected: " + str(player_detected()) + "\n"
 	debug_msg += "Is in FOV: " + str(player_in_fov()) + "\n"
-	debug_msg += "FOV: " + str(get_fov_angle()) + "\n"
+	debug_msg += "FOV: " + str(get_fov_angle()) + " " + ENEMY_STATE.keys()[_state] + "\n"
 	label.text = debug_msg
 
 func update_navigation():
