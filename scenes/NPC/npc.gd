@@ -6,15 +6,26 @@ extends CharacterBody2D
 @onready var player_detect: Node2D = $PlayerDetect
 @onready var ray_cast_2d: RayCast2D = $PlayerDetect/RayCast2D
 @onready var warning: Sprite2D = $Warning
+@onready var gasp_sound: AudioStreamPlayer2D = $GaspSound
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 @export var patrol_points: NodePath
 
 
 
-
-const SPEED: float = 120
-
 enum ENEMY_STATE { PATROLLING, CHASING, SEARCHING }
+
+const FOV = {
+	ENEMY_STATE.PATROLLING: 80.0,
+	ENEMY_STATE.CHASING: 110.0,
+	ENEMY_STATE.SEARCHING: 100.0
+}
+
+const SPEED = {
+	ENEMY_STATE.PATROLLING: 100.0,
+	ENEMY_STATE.CHASING: 120.0,
+	ENEMY_STATE.SEARCHING: 100.0
+}
 
 
 var _waypoints: Array = []
@@ -53,7 +64,7 @@ func get_fov_angle() -> float:
 	return 0.0
 
 func player_in_fov() -> bool:
-	return get_fov_angle() < 60.0
+	return get_fov_angle() < FOV[_state]
 
 
 func raycast_to_player() -> void:
@@ -101,7 +112,12 @@ func set_state(new_state: ENEMY_STATE) -> void:
 	
 	if new_state == ENEMY_STATE.SEARCHING:
 		warning.show()
-
+	elif new_state == ENEMY_STATE.CHASING:
+		gasp_sound.play()
+		animation_player.play("alert")
+	elif new_state == ENEMY_STATE.CHASING:
+		animation_player.play("RESET")
+		
 	_state = new_state
 
 func update_movement() -> void:
@@ -133,6 +149,7 @@ func set_label():
 	debug_msg += "Player detected: " + str(player_detected()) + "\n"
 	debug_msg += "Is in FOV: " + str(player_in_fov()) + "\n"
 	debug_msg += "FOV: " + str(get_fov_angle()) + " " + ENEMY_STATE.keys()[_state] + "\n"
+	debug_msg += "FOV: " + str(player_in_fov()) + " "+ str(SPEED[_state])+ "\n"
 	label.text = debug_msg
 
 func update_navigation():
@@ -140,6 +157,6 @@ func update_navigation():
 		var next_path_position: Vector2 = nav_agent.get_next_path_position()
 		sprite_2d.look_at(next_path_position)
 		
-		velocity = global_position.direction_to(next_path_position) * SPEED
+		velocity = global_position.direction_to(next_path_position) * SPEED[_state]
 		move_and_slide()
 	
