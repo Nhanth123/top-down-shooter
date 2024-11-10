@@ -5,6 +5,7 @@ extends CharacterBody2D
 @onready var nav_agent: NavigationAgent2D = $NavAgent
 @onready var player_detect: Node2D = $PlayerDetect
 @onready var ray_cast_2d: RayCast2D = $PlayerDetect/RayCast2D
+@onready var warning: Sprite2D = $Warning
 
 @export var patrol_points: NodePath
 
@@ -86,16 +87,29 @@ func navigate_wp() -> void:
 
 func process_chasing() -> void:
 	set_nav_to_player()
+	
+func process_searching() -> void:
+	if nav_agent.is_navigation_finished() == true:
+		set_state(ENEMY_STATE.PATROLLING)
 
 func set_state(new_state: ENEMY_STATE) -> void:
 	if new_state == _state:
 		return
+	
+	if _state == ENEMY_STATE.SEARCHING:
+		warning.hide()
+	
+	if new_state == ENEMY_STATE.SEARCHING:
+		warning.show()
+
 	_state = new_state
 
 func update_movement() -> void:
 	match _state:
 		ENEMY_STATE.PATROLLING:
 			process_patrolling()
+		ENEMY_STATE.SEARCHING:
+			process_searching()
 		ENEMY_STATE.CHASING:
 			process_chasing()
 
@@ -105,8 +119,8 @@ func update_state() -> void:
 	
 	if can_see == true:
 		new_state = ENEMY_STATE.CHASING
-	else:
-		new_state = ENEMY_STATE.PATROLLING
+	elif can_see == false and new_state == ENEMY_STATE.CHASING:
+		new_state = ENEMY_STATE.SEARCHING
 	
 	set_state(new_state)
 
