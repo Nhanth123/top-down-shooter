@@ -5,8 +5,6 @@ class_name Player
 const SPEED: float = 180
 
 
-
-
 func _ready() -> void:
 	pass
 	
