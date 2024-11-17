@@ -15,6 +15,16 @@ run/main_scene="res://scenes/level_map.tscn"
 config/features=PackedStringArray("4.3", "Mobile")
 config/icon="res://icon.svg"
 
+[autoload]
+
+SignalManager="*res://singleton/signal_manager.gd"
+SoundManager="*res://singleton/sound_manager.gd"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=968
+
 [global_group]
 
 Player=""

@@ -113,7 +113,7 @@ func set_state(new_state: ENEMY_STATE) -> void:
 	if new_state == ENEMY_STATE.SEARCHING:
 		warning.show()
 	elif new_state == ENEMY_STATE.CHASING:
-		gasp_sound.play()
+		#SoundManager.play_gasp(gasp_sound)
 		animation_player.play("alert")
 	elif new_state == ENEMY_STATE.CHASING:
 		animation_player.play("RESET")

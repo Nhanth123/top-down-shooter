@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=4 uid="uid://rd175g01g8y3"]
+[gd_scene load_steps=8 format=4 uid="uid://rd175g01g8y3"]
 
 [ext_resource type="TileSet" uid="uid://do88xvca6dsqy" path="res://assets/level_tiles_backup.tres" id="1_pf5or"]
 [ext_resource type="PackedScene" uid="uid://ci65btrdypihb" path="res://scenes/NPC/npc.tscn" id="2_lsai2"]
 [ext_resource type="PackedScene" uid="uid://b7b3h7vtdshqx" path="res://scenes/waypoint/waypoint.tscn" id="3_lshyl"]
 [ext_resource type="PackedScene" uid="uid://41s3gq06gwcm" path="res://scenes/Player/player.tscn" id="4_lrxse"]
+[ext_resource type="PackedScene" uid="uid://c74udnmaya5v8" path="res://scenes/pickup/pick_up.tscn" id="5_rgn44"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_h1qua"]
 vertices = PackedVector2Array(459, 700.117, 459.898, 869.5, 412.563, 728, 350.758, 488, 362.578, 867, 410.609, 884.5, 43.8281, 934.391, 91.8125, 867, 40.1406, 302.289, 81.0078, 723.469, 344.773, 293.688, 315.477, 728, 458.109, 488)
@@ -61,4 +62,9 @@ position = Vector2(88, 627)
 position = Vector2(676, 545)
 
 [node name="Player" parent="." instance=ExtResource("4_lrxse")]
-position = Vector2(162, 647)
+position = Vector2(65, 746)
+
+[node name="Pickups" type="Node" parent="."]
+
+[node name="PickUp" parent="Pickups" instance=ExtResource("5_rgn44")]
+position = Vector2(37, 690)
