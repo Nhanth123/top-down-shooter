@@ -1,3 +1,4 @@
 extends Node
 
 signal on_pickup
+signal on_show_exit
