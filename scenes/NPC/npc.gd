@@ -11,7 +11,7 @@ extends CharacterBody2D
 
 @export var patrol_points: NodePath
 
-
+const BULLET  = preload("res://scenes/Bullet/bullet.tscn")
 
 enum ENEMY_STATE { PATROLLING, CHASING, SEARCHING }
 
@@ -159,4 +159,17 @@ func update_navigation():
 		
 		velocity = global_position.direction_to(next_path_position) * SPEED[_state]
 		move_and_slide()
+
+func shoot() -> void:
+	var target = _player_ref.global_position
+	var b  = BULLET.instantiate()
+	b.init(target, global_position)
+	get_tree().root.add_child(b)
+	SoundManager.play_laser(gasp_sound)
+	
+	
+func _on_shoot_timer_timeout() -> void:
+	if _state != ENEMY_STATE.CHASING:
+		return
+	shoot()
 	
