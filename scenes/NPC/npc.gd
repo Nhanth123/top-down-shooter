@@ -8,6 +8,7 @@ extends CharacterBody2D
 @onready var warning: Sprite2D = $Warning
 @onready var gasp_sound: AudioStreamPlayer2D = $GaspSound
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var shoot_timer: Timer = $Shoot_Timer
 
 @export var patrol_points: NodePath
 
@@ -140,6 +141,11 @@ func update_state() -> void:
 	
 	set_state(new_state)
 
+func stop_action():
+	set_physics_process(false)
+	shoot_timer.stop()
+
+
 func set_label():
 	var debug_msg = ""
 	debug_msg += "Done: " + str(nav_agent.is_navigation_finished()) + "\n"
@@ -148,7 +154,7 @@ func set_label():
 	debug_msg += "Target: " + str(nav_agent.target_position) + "\n"
 	debug_msg += "Player detected: " + str(player_detected()) + "\n"
 	debug_msg += "Is in FOV: " + str(player_in_fov()) + "\n"
-	debug_msg += "FOV: " + str(get_fov_angle()) + " " + ENEMY_STATE.keys()[_state] + "\n"
+	debug_msg += "FOV: " + "%.1f" % get_fov_angle() + " " + ENEMY_STATE.keys()[_state] + "\n"
 	debug_msg += "FOV: " + str(player_in_fov()) + " "+ str(SPEED[_state])+ "\n"
 	label.text = debug_msg
 
@@ -166,8 +172,7 @@ func shoot() -> void:
 	b.init(target, global_position)
 	get_tree().root.add_child(b)
 	SoundManager.play_laser(gasp_sound)
-	
-	
+
 func _on_shoot_timer_timeout() -> void:
 	if _state != ENEMY_STATE.CHASING:
 		return

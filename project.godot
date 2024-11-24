@@ -28,6 +28,8 @@ window/size/viewport_height=968
 [global_group]
 
 Player=""
+NPC=""
+Bullet=""
 
 [input]
 

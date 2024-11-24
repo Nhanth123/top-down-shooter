@@ -15,7 +15,10 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	_time += delta
 	time_label.text = "%.1fs" % _time
-	
+
+func update_score(act: int , target: int) -> void:
+	score_label.text = "%s / %s" % [act, target]
+
 func _on_show_exit():
 	exit_label.show()
 

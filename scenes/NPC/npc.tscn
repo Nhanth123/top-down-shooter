@@ -45,7 +45,7 @@ _data = {
 "alert": SubResource("Animation_mb62i")
 }
 
-[node name="NPC" type="CharacterBody2D"]
+[node name="NPC" type="CharacterBody2D" groups=["NPC"]]
 collision_layer = 0
 script = ExtResource("1_jfw7b")
 
