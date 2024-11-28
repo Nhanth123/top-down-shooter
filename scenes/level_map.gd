@@ -13,7 +13,7 @@ func _ready() -> void:
 	SignalManager.on_pickup.connect(_on_pickup)
 	SignalManager.on_exit.connect(_on_exit)
 
-func check_show_exit():
+func check_show_exit() ->void:
 	if _collected == _pickups_count:
 		SignalManager.on_show_exit.emit()
 		print("on_show_exit")
