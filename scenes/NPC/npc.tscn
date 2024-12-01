@@ -65,6 +65,7 @@ offset_bottom = 23.0
 text = "Debug msg"
 
 [node name="NavAgent" type="NavigationAgent2D" parent="."]
+avoidance_enabled = true
 debug_enabled = true
 debug_use_custom = true
 debug_path_custom_color = Color(0.262745, 0.47451, 1, 1)
@@ -99,5 +100,6 @@ collision_mask = 4
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
 shape = SubResource("CircleShape2D_567rd")
 
+[connection signal="velocity_computed" from="NavAgent" to="." method="_on_nav_agent_velocity_computed"]
 [connection signal="timeout" from="Shoot_Timer" to="." method="_on_shoot_timer_timeout"]
 [connection signal="body_entered" from="HitArea" to="." method="_on_hit_area_body_entered"]
