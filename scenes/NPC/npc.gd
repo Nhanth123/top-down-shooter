@@ -38,9 +38,13 @@ func _ready() -> void:
 	set_physics_process(false)
 	create_waypoint()
 	_player_ref = get_tree().get_first_node_in_group("Player")
+	#call_deferred("set_physics_process", true)
+	call_deferred("late_setup")
+
+func late_setup():
+	await get_tree().physics_frame
 	call_deferred("set_physics_process", true)
 	
-
 func create_waypoint():
 	for c in get_node(patrol_points).get_children():
 		_waypoints.append(c.global_position)
@@ -166,6 +170,7 @@ func update_navigation():
 		velocity = global_position.direction_to(next_path_position) * SPEED[_state]
 		move_and_slide()
 
+
 func shoot() -> void:
 	var target = _player_ref.global_position
 	var b  = BULLET.instantiate()
@@ -173,8 +178,12 @@ func shoot() -> void:
 	get_tree().root.add_child(b)
 	SoundManager.play_laser(gasp_sound)
 
+
 func _on_shoot_timer_timeout() -> void:
 	if _state != ENEMY_STATE.CHASING:
 		return
 	shoot()
-	
+
+
+func _on_hit_area_body_entered(body: Node2D) -> void:
+	SignalManager.on_game_over.emit()

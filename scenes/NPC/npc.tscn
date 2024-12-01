@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://ci65btrdypihb"]
+[gd_scene load_steps=9 format=3 uid="uid://ci65btrdypihb"]
 
 [ext_resource type="Script" path="res://scenes/NPC/npc.gd" id="1_jfw7b"]
 [ext_resource type="Texture2D" uid="uid://dgm5qoawqbv8g" path="res://assets/images/soldier1_gun.png" id="1_xmtgk"]
@@ -45,6 +45,9 @@ _data = {
 "alert": SubResource("Animation_mb62i")
 }
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_567rd"]
+radius = 22.0
+
 [node name="NPC" type="CharacterBody2D" groups=["NPC"]]
 collision_layer = 0
 script = ExtResource("1_jfw7b")
@@ -89,4 +92,12 @@ libraries = {
 wait_time = 1.5
 autostart = true
 
+[node name="HitArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
+shape = SubResource("CircleShape2D_567rd")
+
 [connection signal="timeout" from="Shoot_Timer" to="." method="_on_shoot_timer_timeout"]
+[connection signal="body_entered" from="HitArea" to="." method="_on_hit_area_body_entered"]
